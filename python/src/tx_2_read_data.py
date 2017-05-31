@@ -59,7 +59,7 @@ while(1):
 
 	# for i in range(0,len(data)):
 	# 	if (chr(int_data[i]) != data[i]):
-	# 		print "ERROR ERROR"
+	# 		print "ERROR"
 
 	for i in range(0,A):
 		socket_serv(s,int_data[i*send_size:i*send_size+send_size])

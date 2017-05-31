@@ -38,7 +38,7 @@ function ctrl_c()
         echo "--cleaning up--"
         echo "Removing *bin *uds *npy"
         rm *.bin *.uds *.npy
-
+        exit
     }
 
 LOC=./src

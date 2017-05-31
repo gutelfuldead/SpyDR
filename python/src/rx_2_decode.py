@@ -89,7 +89,7 @@ while(1):
     aem[len(sym)-2,2] = 666
 
     # Traceback to receive origin states
-    stht = np.empty(len(sym),dtype=np.int8) # state history table
+    stht = np.empty(len(sym)) # state history table
     stht[0] = current_state = 0 # current best path state
     for i in range(len(sym)-1,0,-1):
         if current_state == 0: # prev possible states are 0 and 1

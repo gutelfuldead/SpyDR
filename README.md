@@ -1,26 +1,36 @@
 <!-- # **SpyDR** -->
 
-## production notes
+Example SDR workflow in Python using Unix Domain Sockets (UDS) to connect all modules. 
 
-* Don't worry about interleaving :white_check_mark:
+To Use
+------
+`./python/RUNALL_SDR.sh` to autostart all the python modules. Ctrl+C will end all of the running modules and clean up data.
 
-* use sockets or shared memory pipe between modules
+`./python/verifyData.sh` will compare the input and output binaries via md5sum. Needs to be fixed since when killing the RUNALL_SDR script data may be in the process of being written to the binary causing a mismatch. 
 
-* <del> modularize all of the tx / rx components and create a single script to prevent the necessity of using pipes or other data sharing means (keep all the data in a single script)
+Sequence of events
+------------------
 
-* Could use a shared memory mailbox sort of approach
+1. `tx_1_create_data.py` create test data, random integers
 
-* Keep a buffer between each module to keep data always ready for transmission (FIFO BLOCK)
+2. `tx_2_read_data.py` takes input data and generates packets of 512 bytes
 
-* USRP takes as an input baseband complex qpsk I and Q channels; it will do the upconversion to carrier and the I/Q combination
+3. `tx_3_FEC.py` performs rate 1/2, k = 3 convolutional encoding on the packets
 
-sdsoc xilinx
+4. `tx_4_qpsk_mod.py` performs NRZ encoding of data then performs qpsk modulation generating I and Q data
 
-## App notes
+5. `awgn_burst_errors_CHANNEL.py` adds awgn and burst errors to the data (burst currently disabled)
 
-### Socket Ports
+6. `rx_1_qpsk_demod.py` demodulates data based on hard decisions
 
-| file name | readin socket | write out socket|
+7. `rx_2_decode.py` (slow) implementation of Viterbi algorithm
+
+8. `rx_3_reconstruct.py` reconstructs integers from bitstream and writes to output.bin
+
+Socket Ports
+------------
+
+| file name | read in socket | write out socket|
 |-----------|---------------|-----------------|
 |tx_1_create_data.py | n/a | n/a |
 |tx_2_read_data.py | n/a | tx2_send |
@@ -30,3 +40,10 @@ sdsoc xilinx
 |rx_1_qpsk_demod.py | channel_send | rx1_send |
 |rx_2_decode.py | rx1_send | rx2_send |
 |rx_3_reconstruct.py | rx2_send | n/a |
+
+
+VHDL
+----
+
+Convolutional Encoder core was generated in vhdl but never tested in implementation.
+
