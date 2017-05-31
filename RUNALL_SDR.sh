@@ -41,7 +41,7 @@ function ctrl_c()
         exit
     }
 
-LOC=./src
+LOC=./python/src
 
 echo "running tx_1_create_data"
 $LOC/tx_1_create_data.py > /dev/null
