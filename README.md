@@ -1,4 +1,12 @@
 <!-- # **SpyDR** -->
+SpyDR
+=====
+
+Software (python) Defined Radio
+
+Written for 2016 Summer Internship at Nasa Goddard Flight Center. 
+
+Demo Forward Error Correction and QPSK Mod/Demod on dataset.
 
 Example SDR workflow in Python using Unix Domain Sockets (UDS) to connect all modules. 
 
